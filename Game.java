@@ -87,23 +87,23 @@ public class Game {
         boolean flag = false;
 
         System.out.print("Please enter your next move: ");
-		do {
-			try {
-				input = scan.nextInt();
+	do {
+            try {
+		input = scan.nextInt();
                 flag = true;
-			}
-			catch(InputMismatchException e) {
-				scan.next();
-			}
+            }
+            catch(InputMismatchException e) {
+                scan.next();
+            }
 
             if(flag && (input >= min && input <= max))
                 break;
             else
                 System.out.print("Please enter integers only from " + min + " to " + max + " only: ");
 
-		} while(true);
+        } while(true);
 	
-		return input;	
+	return input;	
     }
 
 }
