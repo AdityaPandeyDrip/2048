@@ -5,7 +5,8 @@ public class Game {
     private Board board;
 
     // winVal is the max value user needs to reach to win the game 
-    public int winVal = 0, score = 0;
+    // maxScore is used to store the max score achieved by the user 
+    public int winVal = 0,maxScore = 0;
 
     // Methods can use the scanner without declaring it each time
     private static Scanner scan = new Scanner (System.in);
@@ -22,12 +23,13 @@ public class Game {
         board.setRandom();
         board.setRandom();
 
-        score = 0;
+        int score = 0;
         System.out.println("------------New Game Started----------");
         do {
             // checking if any cell is moved in the last move and is there any empty cell present to add new random val
             if(board.numberOfCellsMoved > 0 && board.isPresentVal(0))
                 board.setRandom();
+            System.out.println("  Max Score: " + maxScore);
             System.out.println("   Score: " + score);
             System.out.println(board);
 
@@ -45,7 +47,7 @@ public class Game {
                 default: System.out.println("Please enter a valid move, 1 to 4 only");
                         continue;
             }
-            
+            maxScore = Math.max(score, maxScore);
         }while(!gameOver());
 
         if(won()){
@@ -55,6 +57,11 @@ public class Game {
         }
         System.out.println(board);
         System.out.println("Your final score is: " + score);
+
+        System.out.println("Please enter 1 if you want to restart the game or 0 to end the game");
+        if(readNextMove(0, 1) == 1){
+            start();
+        }
     }
 
     // Checks if game is over or not
@@ -87,9 +94,9 @@ public class Game {
         boolean flag = false;
 
         System.out.print("Please enter your next move: ");
-	do {
+        do {
             try {
-		input = scan.nextInt();
+				input = scan.nextInt();
                 flag = true;
             }
             catch(InputMismatchException e) {
