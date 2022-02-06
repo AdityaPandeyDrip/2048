@@ -96,7 +96,7 @@ public class Game {
         System.out.print("Please enter your next move: ");
         do {
             try {
-				input = scan.nextInt();
+		input = scan.nextInt();
                 flag = true;
             }
             catch(InputMismatchException e) {
