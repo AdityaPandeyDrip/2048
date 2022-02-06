@@ -16,3 +16,6 @@
 3. ```cd 2048```
 4. Run the following command to start the game, ```javac Main.java && java Main```
 
+## Screenshot of the game play 
+
+![Game Play Sceenshot](https://user-images.githubusercontent.com/92724037/152690411-f43c8478-6e0a-46ce-a0a8-94552fad1f27.png)
