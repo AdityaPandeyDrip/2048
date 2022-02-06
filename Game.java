@@ -23,7 +23,7 @@ public class Game {
         board.setRandom();
         board.setRandom();
 
-        int score = 0;
+        int score = 0, nextMove = 0;
         System.out.println("------------New Game Started----------");
         do {
             // checking if any cell is moved in the last move and is there any empty cell present to add new random val
@@ -34,8 +34,9 @@ public class Game {
             System.out.println(board);
 
             // reading and processing next move
-            int nextMove = readNextMove(1, 4);
+            nextMove = readNextMove(0, 4);
             switch(nextMove){
+                case 0: break;
                 case 1: score += board.shiftLeft();
                         break;
                 case 2: score += board.shiftRight();
@@ -48,11 +49,13 @@ public class Game {
                         continue;
             }
             maxScore = Math.max(score, maxScore);
-        }while(!gameOver());
+        }while(!gameOver() && nextMove != 0);
 
         if(won()){
             System.out.println("---------Congratulations, You Won The Game-------");
-        }else {
+        }else if(nextMove == 0){
+            System.out.println("---------You Quit The Game-------");
+        } else{
             System.out.println("---------You Lost The Game-------");
         }
         System.out.println(board);
