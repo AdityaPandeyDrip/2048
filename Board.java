@@ -7,6 +7,9 @@ public class Board {
     // 2d int array to store each cells value
     public int [][] board;
 
+     // 2d int array to store if the current cell had already merged with another cell
+    public int [][] isMerged;
+
     // to store the number of cells moved after each move
     public int numberOfCellsMoved = 0;
 
@@ -14,14 +17,23 @@ public class Board {
         this.rowSize = rowSize;
         this.colSize = colSize;
         board = new int[rowSize][colSize];
+        isMerged = new int[rowSize][colSize];
     }
 
     public void set(Cell cell){
         board[cell.row][cell.col] = cell.val;
     }
 
+    public void setMerged(Cell cell){
+        isMerged[cell.row][cell.col] = cell.val;
+    }
+
     public int get(Cell cell){
         return board[cell.row][cell.col];
+    }
+
+    public int getMerged(Cell cell){
+        return isMerged[cell.row][cell.col];
     }
 
     public int getRowSize(){
@@ -50,6 +62,14 @@ public class Board {
     public void clear(){
         for(int i = 0; i < getRowSize(); ++i)
             Arrays.fill(board[i], 0);
+        clearMerge();
+        numberOfCellsMoved = 0;
+    }
+
+    // resets the merge to 0
+    public void clearMerge(){
+        for(int i = 0; i < getRowSize(); ++i)
+            Arrays.fill(isMerged[i], 0);
     }
 
     // sets any empty cell in the board to 2 or 4
@@ -64,8 +84,8 @@ public class Board {
         cell.val = (int)Math.pow(2, 1 + (int)(Math.random() * (2)));
 
         while(get(cell) != 0){
-            cell.row = (int)(Math.random() * (4));
-            cell.col = (int)(Math.random() * (4));
+            cell.row = (int)(Math.random() * (getRowSize()));
+            cell.col = (int)(Math.random() * (getColSize()));    
         }
         set(cell);
     }
@@ -78,7 +98,7 @@ public class Board {
         if(to.row >= 0 && to.row < getRowSize() && to.col >= 0 && to.col < getColSize()){
             if(get(to) == 0){
                 return 1;
-            }else if( get(to) == get(from)){
+            }else if( get(to) == get(from) && getMerged(to) == 0){
                 return 2;
             }
         }
@@ -126,6 +146,7 @@ public class Board {
                     return shift(to, dx, dy);
             case 2: move(from, to);
                     ++numberOfCellsMoved;
+                    setMerged(to);
                     return get(to);
         }
 
@@ -136,6 +157,7 @@ public class Board {
     public int shiftLeft(){
         int dx = 0, dy = -1, score = 0;
         numberOfCellsMoved = 0;
+        clearMerge();
 
         for(int col = 0; col < getColSize(); ++col)
             for(int row = 0; row < getRowSize(); ++row)
@@ -148,6 +170,7 @@ public class Board {
     public int shiftRight(){
         int dx = 0, dy = 1, score = 0;
         numberOfCellsMoved = 0;
+        clearMerge();
 
         for(int col = getColSize() - 1; col >= 0; --col)
             for(int row = getRowSize() - 1; row >= 0; --row)
@@ -160,6 +183,7 @@ public class Board {
     public int shiftUp(){
         int dx = -1, dy = 0, score = 0;
         numberOfCellsMoved = 0;
+        clearMerge();
 
         for(int row = 0; row < getRowSize(); ++row)
             for(int col = 0; col < getColSize(); ++col)
@@ -172,6 +196,7 @@ public class Board {
     public int shiftDown(){
         int dx = 1, dy = 0, score = 0;
         numberOfCellsMoved = 0;
+        clearMerge();
 
         for(int row = getRowSize() - 1; row >= 0; --row)
             for(int col = getColSize() - 1; col >= 0; --col)
